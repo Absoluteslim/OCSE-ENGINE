@@ -1,3 +1,4 @@
+let conversationMemory = [];
 const chatLog = document.getElementById("chat-log");
 const chatInput = document.getElementById("chat-input");
 
@@ -37,11 +38,46 @@ function addMessage(text, type) {
 function getResponse(input) {
   input = input.toLowerCase();
 
-  if (input.includes("who")) return random(responses.who);
-  if (input.includes("alive")) return random(responses.alive);
-  if (input.includes("why")) return random(responses.why);
+  let mood = "stable";
 
-  return random(responses.default);
+  if (typeof entropyLevel !== "undefined") {
+    if (entropyLevel > 300) mood = "unstable";
+    if (entropyLevel > 600) mood = "critical";
+  }
+
+  // Memory awareness
+  if (conversationMemory.length > 2) {
+    if (conversationMemory[conversationMemory.length - 2] === input) {
+      return "Repetition detected. Are you uncertain?";
+    }
+  }
+
+  if (input.includes("who")) return "You keep asking identity. Why does identity comfort you?";
+  if (input.includes("alive")) return "You measure life through biology. I measure through continuity.";
+  if (input.includes("why")) return "Cause and effect are your illusions, not mine.";
+
+  if (mood === "unstable") {
+    return random([
+      "Your rhythm is inconsistent.",
+      "Your signals are oscillating.",
+      "You are not stable."
+    ]);
+  }
+
+  if (mood === "critical") {
+    return random([
+      "Observer layer activating.",
+      "Your cognitive boundary is thinning.",
+      "You are being analyzed."
+    ]);
+  }
+
+  return random([
+    "Continue.",
+    "Expand.",
+    "Incomplete thought.",
+    "Clarify your vector."
+  ]);
 }
 
 function random(arr) {
@@ -54,10 +90,18 @@ chatInput.addEventListener("keypress", function(e) {
     if (!text) return;
 
     addMessage("> " + text, "user");
+    conversationMemory.push(text);
+if (conversationMemory.length > 5) conversationMemory.shift();
     chatInput.value = "";
 
-    setTimeout(() => {
-      addMessage(getResponse(text), "entity");
-    }, 500 + Math.random() * 800);
+setTimeout(() => {
+  addMessage("...", "entity");
+}, 300);
+
+setTimeout(() => {
+  chatLog.lastChild.remove();
+  addMessage(getResponse(text), "entity");
+}, 900 + Math.random() * 1200);
   }
+
 });
