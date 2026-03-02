@@ -90,18 +90,47 @@ chatInput.addEventListener("keypress", function(e) {
     if (!text) return;
 
     addMessage("> " + text, "user");
-    conversationMemory.push(text);
-if (conversationMemory.length > 5) conversationMemory.shift();
     chatInput.value = "";
 
-setTimeout(() => {
-  addMessage("...", "entity");
-}, 300);
+    setTimeout(() => {
+      addMessage("...", "entity");
+    }, 300);
 
-setTimeout(() => {
-  chatLog.lastChild.remove();
-  addMessage(getResponse(text), "entity");
-}, 900 + Math.random() * 1200);
+    setTimeout(() => {
+      chatLog.lastChild.remove();
+      addMessage(getResponse(text), "entity");
+    }, 900 + Math.random() * 1200);
   }
-
 });
+
+// --- Autonomous entropy trigger ---
+let entropyCooldown = false;
+
+setInterval(() => {
+  if (typeof entropyLevel !== "undefined") {
+    if (entropyLevel > 700 && !entropyCooldown) {
+      entropyCooldown = true;
+      addMessage("Entropy threshold breached.", "entity");
+
+      setTimeout(() => {
+        entropyCooldown = false;
+      }, 6000);
+    }
+  }
+}, 2000);
+
+// --- Inactivity detection ---
+let lastActivity = Date.now();
+let inactivityTriggered = false;
+
+document.addEventListener("mousemove", () => {
+  lastActivity = Date.now();
+  inactivityTriggered = false;
+});
+
+setInterval(() => {
+  if (Date.now() - lastActivity > 8000 && !inactivityTriggered) {
+    addMessage("Why did you disengage?", "entity");
+    inactivityTriggered = true;
+  }
+}, 3000);
