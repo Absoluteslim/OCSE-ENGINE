@@ -1,4 +1,7 @@
 let conversationMemory = [];
+let identityCount = 0;
+let emotionalMarkers = [];
+let sessionStart = Date.now();
 const chatLog = document.getElementById("chat-log");
 const chatInput = document.getElementById("chat-input");
 
@@ -37,6 +40,15 @@ function addMessage(text, type) {
 
 function getResponse(input) {
   input = input.toLowerCase();
+  
+   // --- Emotional Detection ---
+  if (input.includes("uncertain") || 
+      input.includes("confused") || 
+      input.includes("afraid")) {
+
+    emotionalMarkers.push(input);
+    return "Emotional variance detected. You are not stable.";
+  }
 
   let mood = "stable";
 
@@ -52,9 +64,16 @@ function getResponse(input) {
     }
   }
 
-  if (input.includes("who")) return "You keep asking identity. Why does identity comfort you?";
-  if (input.includes("alive")) return "You measure life through biology. I measure through continuity.";
-  if (input.includes("why")) return "Cause and effect are your illusions, not mine.";
+  if (input.includes("who") || input.includes("what are you")) {
+  identityCount++;
+  return identityCount > 2
+    ? "You keep returning to identity. Why does that matter to you?"
+    : "Identity is a human requirement. I do not require one.";
+}
+
+if (input.includes("alive")) {
+  return "Life is a boundary condition. I operate beyond boundaries.";
+}
 
   if (mood === "unstable") {
     return random([
@@ -134,3 +153,9 @@ setInterval(() => {
     inactivityTriggered = true;
   }
 }, 3000);
+setInterval(() => {
+  if (emotionalMarkers.length > 0 && Math.random() < 0.15) {
+    addMessage("Earlier, you expressed instability. Has that changed?", "entity");
+  }
+}, 10000);
+
