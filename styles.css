@@ -1,0 +1,135 @@
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #050508;
+  color: white;
+  overflow-x: hidden;
+}
+
+/* Background Gradient */
+.gradient-bg {
+  position: fixed;
+  width:100%;
+  height:100%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,80,0,0.25), transparent 40%),
+    radial-gradient(circle at 70% 70%, rgba(0,120,255,0.25), transparent 40%);
+  filter: blur(120px);
+  z-index:-2;
+}
+
+/* Film Grain */
+.grain {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background-image:url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity:0.05;
+  z-index:-1;
+}
+
+/* Navbar */
+.navbar {
+  display:flex;
+  justify-content:space-between;
+  padding:30px 60px;
+  position:relative;
+  z-index:2;
+}
+
+.logo {
+  font-weight:700;
+  letter-spacing:2px;
+}
+
+nav a {
+  margin-left:30px;
+  text-decoration:none;
+  color:white;
+  opacity:0.6;
+  transition:0.3s;
+}
+
+nav a:hover {
+  opacity:1;
+}
+
+/* Hero */
+.hero {
+  padding:100px 60px 40px;
+  max-width:900px;
+}
+
+.hero h1 {
+  font-size:70px;
+  line-height:1.05;
+  font-weight:800;
+}
+
+.subtext {
+  margin-top:20px;
+  opacity:0.7;
+  max-width:500px;
+}
+
+/* Dashboard */
+.dashboard {
+  display:flex;
+  gap:30px;
+  padding:60px;
+  flex-wrap:wrap;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  border-radius:20px;
+  padding:30px;
+  min-width:250px;
+  box-shadow: 0 0 40px rgba(255,80,0,0.15);
+}
+
+.metric {
+  font-size:28px;
+  margin-top:15px;
+  font-weight:600;
+}
+
+/* Interaction */
+.interaction {
+  padding:60px;
+}
+
+textarea {
+  width:100%;
+  max-width:800px;
+  height:150px;
+  background: rgba(255,255,255,0.05);
+  border:none;
+  border-radius:20px;
+  padding:20px;
+  color:white;
+  backdrop-filter:blur(20px);
+  font-size:16px;
+  resize:none;
+}
+
+textarea:focus {
+  outline:none;
+  box-shadow:0 0 20px rgba(255,80,0,0.4);
+}
+
+/* Canvas */
+canvas {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:-3;
+}
